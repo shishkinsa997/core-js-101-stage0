@@ -232,15 +232,15 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-  // const dict = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  // const dict13 = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
-  // let res = '';
+  const dict = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !?,.';
+  const dict13 = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm !?,.';
+  let res = '';
 
-  // for (let i = 0; i < str.length; i + 1) {
-  //   res += dict13.charAt(dict.indexOf(str.charAt(i)));
-  // }
+  for (let i = 0; i < str.length; i += 1) {
+    res += dict13.charAt(dict.indexOf(str.charAt(i)));
+  }
 
-  return str;
+  return res;
 }
 
 /**
