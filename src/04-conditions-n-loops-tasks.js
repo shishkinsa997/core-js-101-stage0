@@ -214,8 +214,18 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let start = '';
+  let end = '';
+
+  if (isStartIncluded) start = '[';
+  if (!isStartIncluded) start = '(';
+
+  if (isEndIncluded) end = ']';
+  if (!isEndIncluded) end = ')';
+
+  const inner = a > b ? `${b}, ${a}` : `${a}, ${b}`;
+  return start + inner + end;
 }
 
 /**
@@ -230,8 +240,11 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  const arr = Array.from(str);
+  const revArr = [];
+  arr.forEach((ch) => revArr.unshift(ch));
+  return revArr.join('');
 }
 
 /**
@@ -246,8 +259,11 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  const arr = Array.from(String(num));
+  const revArr = [];
+  arr.forEach((ch) => revArr.unshift(ch));
+  return Number(revArr.join(''));
 }
 
 /**
@@ -270,8 +286,25 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(cnn) {
+  const arr = Array.from(String(cnn), Number).reverse();
+
+  const odd = arr.filter((_, index) => index % 2 !== 0);
+  const even = arr.filter((_, index) => index % 2 === 0);
+
+  const oddTrans = (num) => {
+    if (num > 4) {
+      const str = String(num * 2);
+      return Number(str.at(0)) + Number(str.at(1));
+    }
+    return num * 2;
+  };
+
+  const evensum = even.reduce((acc, curr) => acc + curr, 0);
+  const oddsum = odd.reduce((acc, curr) => acc + oddTrans(curr), 0);
+
+  const sum = oddsum + evensum;
+  return sum % 10 === 0;
 }
 
 /**
@@ -288,8 +321,15 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const sum = Array.from(String(num), Number).reduce(
+    (acc, curr) => acc + curr,
+    0
+  );
+  if (sum > 9) {
+    return getDigitalRoot(sum);
+  }
+  return sum;
 }
 
 /**
@@ -313,8 +353,67 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  if (str === '') return true;
+
+  const OPENS = ['[', '{', '(', '<'];
+  const PAIRS = {
+    ']': '[',
+    '}': '{',
+    ')': '(',
+    '>': '<',
+  };
+
+  const arr = Array.from(str);
+  const stack = [];
+
+  let isValid = true;
+
+  arr.forEach((curr) => {
+    if (!isValid) return;
+
+    if (OPENS.includes(curr)) {
+      stack.push(curr);
+      return;
+    }
+
+    if (stack.length === 0 || PAIRS[curr] !== stack.pop()) {
+      isValid = false;
+    }
+  });
+
+  return isValid && stack.length === 0;
+  //   if (str === '') return true;
+
+  // const stack = [];
+  // const OPENS = ['[', '{', '(', '<'];
+  // const PAIRS = {
+  //   ']': '[',
+  //   '}': '{',
+  //   ')': '(',
+  //   '>': '<',
+  // };
+
+  // for (let i = 0; i < str.length; i += 1) {
+  //   const curr = str[i];
+  //   if (OPENS.includes(curr)) {
+  //     stack.push(curr);
+  //   } else {
+  //     if (stack.length === 0) {
+  //       return false;
+  //     }
+
+  //     const top = stack[stack.length - 1];
+
+  //     if (PAIRS[curr] === top) {
+  //       stack.pop();
+  //     } else {
+  //       return false;
+  //     }
+  //   }
+  // }
+
+  // return stack.length === 0;
 }
 
 /**
@@ -337,8 +436,11 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  if (num < n) {
+    return String(num);
+  }
+  return toNaryString(Math.floor(num / n), n) + String(num % n);
 }
 
 /**
