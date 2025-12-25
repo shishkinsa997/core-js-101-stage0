@@ -26,8 +26,13 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  const fizz = num % 3 === 0;
+  const buzz = num % 5 === 0;
+  if (fizz && buzz) return 'FizzBuzz';
+  if (fizz) return 'Fizz';
+  if (buzz) return 'Buzz';
+  return num;
 }
 
 /**
@@ -41,8 +46,9 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  if (n <= 1) return 1;
+  return n * getFactorial(n - 1);
 }
 
 /**
@@ -57,8 +63,9 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  if (n1 >= n2) return n2;
+  return n1 + getSumBetweenNumbers(n1 + 1, n2);
 }
 
 /**
@@ -76,8 +83,8 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return a + b > c && a + c > b && b + c > a;
 }
 
 /**
@@ -112,8 +119,10 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(r1, r2) {
+  const overlapX = r1.left < r2.left + r2.width && r2.left < r1.left + r1.width;
+  const overlapY = r1.top < r2.top + r2.height && r2.top < r1.top + r1.height;
+  return overlapX && overlapY;
 }
 
 /**
@@ -140,10 +149,10 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  * @example:
  *   { center: { x:0, y:0 }, radius:10 },  { x:0, y:0 }     => true
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
- *
+ *(xp−xc)2+(yp−yc)2≤R2
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(c, p) {
+  return (p.x - c.center.x) ** 2 + (p.y - c.center.y) ** 2 < c.radius ** 2;
 }
 
 /**
@@ -157,8 +166,13 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  let res;
+  for (let i = 0; i < str.length; i += 1) {
+    res = str.match(new RegExp(str[i], 'g'));
+    if (res.length === 1) return str[i];
+  }
+  return null;
 }
 
 /**
@@ -183,8 +197,8 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, s, e) {
+  return `${s ? '[' : '('}${a > b ? b : a}, ${b > a ? b : a}${e ? ']' : ')'}`;
 }
 
 /**
@@ -199,8 +213,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return [...str].reverse().join('');
 }
 
 /**
@@ -215,8 +229,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(n) {
+  return [...n.toString()].reverse().join('');
 }
 
 /**
@@ -239,8 +253,20 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(n) {
+  const arr = [...n.toString()].map((x) => Number(x)).reverse();
+  const sumA = arr
+    .filter((_, i) => i % 2 !== 0)
+    .reduce((acc, curr) => {
+      if (curr * 2 > 9) {
+        return acc + ((curr * 2) % 10) + 1;
+      }
+      return acc + curr * 2;
+    }, 0);
+  const sumB = arr
+    .filter((_, i) => i % 2 === 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  return (sumA + sumB) % 10 === 0;
 }
 
 /**
