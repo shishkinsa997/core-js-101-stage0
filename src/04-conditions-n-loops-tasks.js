@@ -283,8 +283,12 @@ function isCreditCardNumber(n) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(n) {
+  const sum = [...n.toString()]
+    .map((x) => Number(x))
+    .reduce((acc, curr) => acc + curr);
+  if (sum >= 10) return getDigitalRoot(sum);
+  return sum;
 }
 
 /**
@@ -308,8 +312,26 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const stack = [];
+  const open = {
+    '(': ')',
+    '[': ']',
+    '{': '}',
+    '<': '>',
+  };
+  const close = {
+    ')': '(',
+    ']': '[',
+    '}': '{',
+    '>': '<',
+  };
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] in open) stack.push(str[i]);
+    else if (str[i] in close && close[str[i]] === stack.at(-1)) stack.pop();
+    else stack.push(str[i]);
+  }
+  return stack.length === 0;
 }
 
 /**
@@ -332,8 +354,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 /**
@@ -348,8 +370,16 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(ps) {
+  for (let i = 0; i <= ps[0].length; i += 1) {
+    for (let j = 1; j < ps.length; j += 1) {
+      if (!ps[j].startsWith(ps[0].slice(0, i))) {
+        const lastSlash = ps[0].slice(0, i - 1).lastIndexOf('/');
+        return lastSlash === -1 ? '' : ps[0].slice(0, lastSlash + 1);
+      }
+    }
+  }
+  return '';
 }
 
 /**
